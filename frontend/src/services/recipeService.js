@@ -8,8 +8,14 @@ export const getRecipes = async () => {
   return response.data;
 };
 
-// Add a recipe
+// Add recipe
 export const addRecipe = async (recipe) => {
   const response = await axios.post(API_URL, recipe);
+  return response.data;
+};
+
+// Update recipe
+export const updateRecipe = async (id, recipe) => {
+  const response = await axios.put(`${API_URL}/${id}`, recipe);
   return response.data;
 };

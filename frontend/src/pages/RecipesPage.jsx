@@ -1,5 +1,5 @@
 import React from 'react'
-import { Search, Heart, Filter, Clock, Users } from "lucide-react";
+import { Search, Heart, Filter, Clock, Users, Pencil } from "lucide-react";
 
 
 export default function RecipesPage({
@@ -13,7 +13,10 @@ export default function RecipesPage({
   setCurrentPage,
   toggleFavorite,
   renderStars,
-})  {
+  setNewRecipe,
+  setShowAddRecipe,
+}) {
+  console.log("Recipes:", recipes);
   return (
     <div className="min-h-screen bg-red-400">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -47,7 +50,7 @@ export default function RecipesPage({
         {/* Recipe Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {recipes.map(recipe => (
-            <div key={recipe.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div key={recipe._id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
               <div className="relative">
                 <img
                   src={recipe.image}
@@ -55,7 +58,7 @@ export default function RecipesPage({
                   className="w-full h-48 object-cover"
                 />
                 <button
-                  onClick={() => toggleFavorite(recipe.id)}
+                  onClick={() => toggleFavorite(recipe._id)}
                   className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow"
                 >
                   <Heart className={`w-5 h-5 ${recipe.isFavorite ? 'fill-rose-500 text-rose-500' : 'text-gray-400'}`} />
@@ -91,6 +94,11 @@ export default function RecipesPage({
                       <span>{recipe.servings}</span>
                     </div>
                   </div>
+                  <button onClick={() => { setNewRecipe(recipe);
+                   setShowAddRecipe(true); }}
+                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                   <Pencil className="w-4 h-4" />
+                  </button>
                   <button
                     onClick={() => {
                       setSelectedRecipe(recipe);

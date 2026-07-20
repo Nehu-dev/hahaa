@@ -160,7 +160,9 @@ const toggleFavorite = (recipeId) => {
   setCurrentPage={setCurrentPage}
   toggleFavorite={toggleFavorite}
   renderStars={renderStars}
-/>}
+  setNewRecipe={setNewRecipe}
+  setShowAddRecipe={setShowAddRecipe}
+  />}
       {currentPage === "favorites" && <FavoritesPage
   favoriteRecipes={favoriteRecipes}
   setSelectedRecipe={setSelectedRecipe}
