@@ -25,10 +25,10 @@ const createRecipe = async (req, res) => {
 const updateRecipe = async (req, res) => {
   try {
     const recipe = await Recipe.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+  req.params.id,
+  req.body,
+  { returnDocument: "after" }
+);
 
     res.json(recipe);
   } catch (error) {
@@ -37,6 +37,7 @@ const updateRecipe = async (req, res) => {
     });
   }
 };
+
 
 const deleteRecipe = async (req, res) => {
   try {

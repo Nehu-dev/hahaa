@@ -3,6 +3,7 @@ import { X, Plus } from "lucide-react";
 
 
 export default function AddRecipeModal({
+  editingRecipe,
   setShowAddRecipe,
   newRecipe,
   setNewRecipe,
@@ -19,7 +20,7 @@ export default function AddRecipeModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-gray-300 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Add New Recipe</h2>
+          <h2 className="text-2xl font-bold"> {editingRecipe ? "Edit Recipe" : "Add New Recipe"}</h2>
           <button
             onClick={() => setShowAddRecipe(false)}
             className="p-2 hover:bg-gray-100 rounded-full"
@@ -187,7 +188,7 @@ export default function AddRecipeModal({
             onClick={submitNewRecipe}
             className="px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors"
           >
-            Add Recipe
+            {editingRecipe ? "Update Recipe" : "Add Recipe"}
           </button>
         </div>
       </div>

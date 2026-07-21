@@ -7,7 +7,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AboutPage from "./pages/AboutPage";
 import RecipeDetailPage from "./pages/RecipeDetailPage";
 import AddRecipeModal from "./component/AddRecipeModal";
-import { getRecipes, addRecipe } from "./services/recipeService";
+import { getRecipes, addRecipe, updateRecipe, deleteRecipe,} from "./services/recipeService";
 import { Star } from "lucide-react";
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
   const [showAddRecipe, setShowAddRecipe] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [recipes, setRecipes] = useState([]);
+  const [editingRecipe, setEditingRecipe] = useState(null);
   useEffect(() => {
   fetchRecipes();
 }, []);
@@ -96,38 +97,74 @@ const updateIngredient = (index, value) => {
   };
 
   const submitNewRecipe = async () => {
-    if (newRecipe.title && newRecipe.description) {
-      const recipe = {
-        ...newRecipe,
-        id: recipes.length + 1,
-        rating: 0,
-        reviews: 0,
-        isFavorite: false,
-        ingredients: newRecipe.ingredients.filter(ing => ing.trim() !== ''),
-        instructions: newRecipe.instructions.filter(inst => inst.trim() !== '')
-      };
-      await addRecipe(recipe);
-      fetchRecipes();
+  if (newRecipe.title && newRecipe.description) {
+    const recipe = {
+      ...newRecipe,
+      ingredients: newRecipe.ingredients.filter(
+        (ing) => ing.trim() !== ""
+      ),
+      instructions: newRecipe.instructions.filter(
+        (inst) => inst.trim() !== ""
+      ),
+    };
+
+    try {
+      if (editingRecipe) {
+        // UPDATE
+        await updateRecipe(editingRecipe._id, recipe);
+      } else {
+        // ADD
+        await addRecipe({
+          ...recipe,
+          rating: 0,
+          reviews: 0,
+          isFavorite: false,
+        });
+      }
+
+      await fetchRecipes();
+
+      setEditingRecipe(null);
+
       setNewRecipe({
-        title: '',
-        description: '',
-        image: '',
-        cookTime: '',
-        servings: '',
-        difficulty: 'Easy',
-        category: 'Main Course',
-        ingredients: [''],
-        instructions: ['']
+        title: "",
+        description: "",
+        image: "",
+        cookTime: "",
+        servings: "",
+        difficulty: "Easy",
+        category: "Main Course",
+        ingredients: [""],
+        instructions: [""],
       });
+
       setShowAddRecipe(false);
-      setCurrentPage('recipes');
+      setCurrentPage("recipes");
+    } catch (err) {
+      console.log(err);
     }
-  };
+  }
+};
 
 const toggleFavorite = (recipeId) => {
   setRecipes(prev => prev.map(recipe => 
-    recipe.id === recipeId ? { ...recipe, isFavorite: !recipe.isFavorite } : recipe
+    recipe._id === recipeId ? { ...recipe, isFavorite: !recipe.isFavorite } : recipe
   ));
+};
+
+const handleDelete = async (id) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this recipe?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await deleteRecipe(id);
+    await fetchRecipes();
+  } catch (error) {
+    console.error("Error deleting recipe:", error);
+  }
 };
 
   const renderStars = (rating) => {
@@ -145,8 +182,14 @@ const toggleFavorite = (recipeId) => {
 }
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} setShowAddRecipe={setShowAddRecipe}
-  setIsLoggedIn={setIsLoggedIn}/>
+      <Navigation
+  currentPage={currentPage}
+  setCurrentPage={setCurrentPage}
+  setShowAddRecipe={setShowAddRecipe}
+  setIsLoggedIn={setIsLoggedIn}
+  setEditingRecipe={setEditingRecipe}
+  setNewRecipe={setNewRecipe}
+/>
 
       {currentPage === "home" && (<HomePage setCurrentPage={setCurrentPage} />)}
       {currentPage === "recipes" && <RecipesPage
@@ -162,7 +205,8 @@ const toggleFavorite = (recipeId) => {
   renderStars={renderStars}
   setNewRecipe={setNewRecipe}
   setShowAddRecipe={setShowAddRecipe}
-  />}
+  setEditingRecipe={setEditingRecipe}
+/>}
       {currentPage === "favorites" && <FavoritesPage
   favoriteRecipes={favoriteRecipes}
   setSelectedRecipe={setSelectedRecipe}
@@ -176,6 +220,7 @@ const toggleFavorite = (recipeId) => {
 
       {showAddRecipe && (
   <AddRecipeModal
+    editingRecipe={editingRecipe}
     setShowAddRecipe={setShowAddRecipe}
     newRecipe={newRecipe}
     setNewRecipe={setNewRecipe}

@@ -15,6 +15,7 @@ export default function RecipesPage({
   renderStars,
   setNewRecipe,
   setShowAddRecipe,
+  setEditingRecipe,
 }) {
   console.log("Recipes:", recipes);
   return (
@@ -94,10 +95,25 @@ export default function RecipesPage({
                       <span>{recipe.servings}</span>
                     </div>
                   </div>
-                  <button onClick={() => { setNewRecipe(recipe);
-                   setShowAddRecipe(true); }}
-                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                   <Pencil className="w-4 h-4" />
+                  <button onClick={() => {
+  setEditingRecipe(recipe);
+
+  setNewRecipe({
+    title: recipe.title,
+    description: recipe.description,
+    image: recipe.image,
+    cookTime: recipe.cookTime,
+    servings: recipe.servings,
+    difficulty: recipe.difficulty,
+    category: recipe.category,
+    ingredients: recipe.ingredients,
+    instructions: recipe.instructions,
+  });
+
+  setShowAddRecipe(true);
+}}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => {

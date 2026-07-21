@@ -7,7 +7,9 @@ export default function Navigation({
   setCurrentPage,
   setShowAddRecipe,
   setIsLoggedIn,
-}){
+  setEditingRecipe,
+  setNewRecipe,
+}) {
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
@@ -55,7 +57,23 @@ export default function Navigation({
               <span>About Us</span>
             </button>
             <button
-              onClick={() => setShowAddRecipe(true)}
+              onClick={() => {
+  setEditingRecipe(null);
+
+  setNewRecipe({
+    title: "",
+    description: "",
+    image: "",
+    cookTime: "",
+    servings: "",
+    difficulty: "Easy",
+    category: "Main Course",
+    ingredients: [""],
+    instructions: [""],
+  });
+
+  setShowAddRecipe(true);
+}}
               className="flex items-center space-x-1 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors"
             >
               <PlusCircle className="w-4 h-4" />
