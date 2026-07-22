@@ -146,13 +146,7 @@ const updateIngredient = (index, value) => {
   }
 };
 
-const toggleFavorite = (recipeId) => {
-  setRecipes(prev => prev.map(recipe => 
-    recipe._id === recipeId ? { ...recipe, isFavorite: !recipe.isFavorite } : recipe
-  ));
-};
-
-const handleDelete = async (id) => {
+const handleDeleteRecipe = async (id) => {
   const confirmDelete = window.confirm(
     "Are you sure you want to delete this recipe?"
   );
@@ -162,10 +156,37 @@ const handleDelete = async (id) => {
   try {
     await deleteRecipe(id);
     await fetchRecipes();
+
+    // If the deleted recipe was open, go back to recipes page
+    if (selectedRecipe?._id === id) {
+      setSelectedRecipe(null);
+      setCurrentPage("recipes");
+    }
   } catch (error) {
     console.error("Error deleting recipe:", error);
   }
 };
+
+const toggleFavorite = (recipeId) => {
+  setRecipes(prev => prev.map(recipe => 
+    recipe._id === recipeId ? { ...recipe, isFavorite: !recipe.isFavorite } : recipe
+  ));
+};
+
+// const handleDelete = async (id) => {
+//   const confirmDelete = window.confirm(
+//     "Are you sure you want to delete this recipe?"
+//   );
+
+//   if (!confirmDelete) return;
+
+//   try {
+//     await deleteRecipe(id);
+//     await fetchRecipes();
+//   } catch (error) {
+//     console.error("Error deleting recipe:", error);
+//   }
+// };
 
   const renderStars = (rating) => {
     return [...Array(5)].map((_, i) => (
@@ -206,6 +227,7 @@ const handleDelete = async (id) => {
   setNewRecipe={setNewRecipe}
   setShowAddRecipe={setShowAddRecipe}
   setEditingRecipe={setEditingRecipe}
+   handleDeleteRecipe={handleDeleteRecipe}
 />}
       {currentPage === "favorites" && <FavoritesPage
   favoriteRecipes={favoriteRecipes}
