@@ -9,11 +9,13 @@ import RecipeDetailPage from "./pages/RecipeDetailPage";
 import AddRecipeModal from "./component/AddRecipeModal";
 import { getRecipes, addRecipe, updateRecipe, deleteRecipe,} from "./services/recipeService";
 import { Star } from "lucide-react";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [showAddRecipe, setShowAddRecipe] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [authPage, setAuthPage] = useState("login");
   const [recipes, setRecipes] = useState([]);
   const [editingRecipe, setEditingRecipe] = useState(null);
   useEffect(() => {
@@ -199,7 +201,16 @@ const toggleFavorite = (recipeId) => {
 
 
   if (!isLoggedIn) {
-  return <LoginPage setIsLoggedIn={setIsLoggedIn} />;
+  return authPage === "login" ? (
+    <LoginPage
+      setIsLoggedIn={setIsLoggedIn}
+      setAuthPage={setAuthPage}
+    />
+  ) : (
+    <RegisterPage
+      setAuthPage={setAuthPage}
+    />
+  );
 }
   return (
     <div className="min-h-screen bg-gray-50">

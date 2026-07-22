@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const authRoutes = require("./routes/auth.route");
 const connectDB = require("./config/db");
 const recipeRoutes = require("./routes/recipe.route");
 
@@ -17,6 +18,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/api/recipes", recipeRoutes);
+app.use("/api/auth", authRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

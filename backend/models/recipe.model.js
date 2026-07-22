@@ -56,6 +56,11 @@ const recipeSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    user: {
+  type: require("mongoose").Schema.Types.ObjectId,
+  ref: "User",
+  required: true,
+},
   },
   {
     timestamps: true,

@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import food1 from "../assest/food1.jpg";
+import { loginUser } from "../services/authService";
 
-const LoginPage = ({ setIsLoggedIn }) => {
+const LoginPage = ({
+  setIsLoggedIn,
+  setAuthPage,
+}) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const response = await loginUser({
+        email,
+        password,
+      });
+
+      // Save user data
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+
+      alert("Login Successful!");
+
+      setIsLoggedIn(true);
+    } catch (error) {
+      alert(error.response?.data?.message || "Login Failed");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div
@@ -26,21 +52,34 @@ const LoginPage = ({ setIsLoggedIn }) => {
           <input
             type="email"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full h-14 px-4 bg-zinc-300 rounded-xl text-gray-800 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-white/50"
           />
 
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full h-14 px-4 bg-zinc-300 rounded-xl text-gray-800 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-white/50"
           />
 
           <button
-            onClick={() => setIsLoggedIn(true)}
+            onClick={handleLogin}
             className="w-full h-14 bg-rose-600 hover:bg-rose-700 rounded-full text-white text-xl font-bold uppercase transition-colors duration-200 shadow-lg"
           >
-            Submit
+            Login
           </button>
+          <p className="text-center text-white mt-6">
+  Don't have an account?{" "}
+  <button
+    onClick={() => setAuthPage("register")}
+    className="text-yellow-300 font-semibold hover:underline"
+  >
+    Register
+  </button>
+</p>
         </div>
       </div>
     </div>
