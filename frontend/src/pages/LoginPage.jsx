@@ -21,6 +21,8 @@ const LoginPage = ({
       localStorage.setItem("user", JSON.stringify(response.user));
 
       alert("Login Successful!");
+      
+      setAuthPage("login");
 
       setIsLoggedIn(true);
     } catch (error) {

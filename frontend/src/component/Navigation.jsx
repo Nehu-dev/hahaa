@@ -9,6 +9,8 @@ export default function Navigation({
   setIsLoggedIn,
   setEditingRecipe,
   setNewRecipe,
+   setRecipes,
+  setSelectedRecipe,
 }) {
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
@@ -80,7 +82,15 @@ export default function Navigation({
               <span>Add Recipe</span>
             </button>
             <button
-              onClick={() => setIsLoggedIn(false)}
+             onClick={() => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+
+  setRecipes([]);
+  setSelectedRecipe(null);
+  setCurrentPage("home");
+  setIsLoggedIn(false);
+}}
               className="flex items-center space-x-1 text-gray-600 hover:text-rose-600 px-3 py-2 rounded-lg transition-colors"
             >
               <User className="w-4 h-4" />

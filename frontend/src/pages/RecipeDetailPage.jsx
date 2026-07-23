@@ -53,7 +53,7 @@ export default function RecipeDetailPage({
       </div>
 
       <button
-        onClick={() => toggleFavorite(selectedRecipe.id)}
+        onClick={() => toggleFavorite(selectedRecipe._id)}
         className="p-3 bg-gray-100 rounded-full hover:bg-gray-200"
       >
         <Heart
@@ -133,22 +133,3 @@ export default function RecipeDetailPage({
 </div>
     );
   }
-
-
-//   if (!isLoggedIn) {
-//     return <LoginPage />;
-//   }
-
-//   return (
-//     <div className="min-h-screen bg-gray-50">
-//     <Navigation />
-//     {currentPage === 'home' && <HomePage />}
-//     {currentPage === 'recipes' && <RecipesPage />}
-//     {currentPage === 'favorites' && <FavoritesPage />}
-//     {currentPage === 'about' && <AboutPage />}
-//     {currentPage === 'recipe-detail' && <RecipeDetailPage />}
-//     {showAddRecipe && <AddRecipeModal />}
-//   </div>
-// );
-
-// export default RecipeWebsite;

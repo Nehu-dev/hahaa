@@ -15,27 +15,48 @@ function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [showAddRecipe, setShowAddRecipe] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [authPage, setAuthPage] = useState("login");
+  const [authPage, setAuthPage] = useState("login");
+
   const [recipes, setRecipes] = useState([]);
   const [editingRecipe, setEditingRecipe] = useState(null);
-  useEffect(() => {
-  fetchRecipes();
-}, []);
 
-const fetchRecipes = async () => {
-  try {
-    const data = await getRecipes();
-    setRecipes(data);
-  } catch (error) {
-    console.error("Error fetching recipes:", error);
-  }
-};
-    
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+
   const categories = ["All", "Main Course", "Dessert", "Salad"];
 
+  const fetchRecipes = async () => {
+    try {
+      const data = await getRecipes();
+
+      data.forEach((recipe) => {
+        console.log(
+          "Recipe:",
+          recipe.title,
+          "Owner:",
+          recipe.user
+        );
+      });
+
+      setRecipes(data);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchRecipes();
+      setCurrentPage("home");
+      setSelectedRecipe(null);
+    } else {
+      setRecipes([]);
+      setSelectedRecipe(null);
+      setCurrentPage("home");
+    }
+  }, [isLoggedIn]);
+  
   const filteredRecipes = recipes.filter(recipe => {
     const matchesSearch = recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          recipe.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -170,25 +191,20 @@ const handleDeleteRecipe = async (id) => {
 };
 
 const toggleFavorite = (recipeId) => {
-  setRecipes(prev => prev.map(recipe => 
-    recipe._id === recipeId ? { ...recipe, isFavorite: !recipe.isFavorite } : recipe
-  ));
+  setRecipes((prev) =>
+    prev.map((recipe) =>
+      recipe._id === recipeId
+        ? { ...recipe, isFavorite: !recipe.isFavorite }
+        : recipe
+    )
+  );
+
+  setSelectedRecipe((prev) =>
+    prev && prev._id === recipeId
+      ? { ...prev, isFavorite: !prev.isFavorite }
+      : prev
+  );
 };
-
-// const handleDelete = async (id) => {
-//   const confirmDelete = window.confirm(
-//     "Are you sure you want to delete this recipe?"
-//   );
-
-//   if (!confirmDelete) return;
-
-//   try {
-//     await deleteRecipe(id);
-//     await fetchRecipes();
-//   } catch (error) {
-//     console.error("Error deleting recipe:", error);
-//   }
-// };
 
   const renderStars = (rating) => {
     return [...Array(5)].map((_, i) => (
@@ -221,6 +237,8 @@ const toggleFavorite = (recipeId) => {
   setIsLoggedIn={setIsLoggedIn}
   setEditingRecipe={setEditingRecipe}
   setNewRecipe={setNewRecipe}
+   setRecipes={setRecipes}
+  setSelectedRecipe={setSelectedRecipe}
 />
 
       {currentPage === "home" && (<HomePage setCurrentPage={setCurrentPage} />)}
