@@ -7,9 +7,9 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AboutPage from "./pages/AboutPage";
 import RecipeDetailPage from "./pages/RecipeDetailPage";
 import AddRecipeModal from "./component/AddRecipeModal";
-import { getRecipes, addRecipe, updateRecipe, deleteRecipe,} from "./services/recipeService";
-import { Star } from "lucide-react";
+import { getRecipes, getMyRecipes, addRecipe, updateRecipe, deleteRecipe,} from "./services/recipeService";
 import RegisterPage from "./pages/RegisterPage";
+import MyRecipesPage from "./pages/MyRecipesPage";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -18,6 +18,7 @@ function App() {
   const [authPage, setAuthPage] = useState("login");
 
   const [recipes, setRecipes] = useState([]);
+  const [myRecipes, setMyRecipes] = useState([]);
   const [editingRecipe, setEditingRecipe] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,7 +30,6 @@ function App() {
   const fetchRecipes = async () => {
     try {
       const data = await getRecipes();
-
       data.forEach((recipe) => {
         console.log(
           "Recipe:",
@@ -38,16 +38,25 @@ function App() {
           recipe.user
         );
       });
-
       setRecipes(data);
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
   };
 
+  const fetchMyRecipes = async () => {
+  try {
+    const data = await getMyRecipes();
+    setMyRecipes(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   useEffect(() => {
     if (isLoggedIn) {
       fetchRecipes();
+      fetchMyRecipes();
       setCurrentPage("home");
       setSelectedRecipe(null);
     } else {
@@ -59,13 +68,13 @@ function App() {
   
   const filteredRecipes = recipes.filter(recipe => {
     const matchesSearch = recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         recipe.description.toLowerCase().includes(searchTerm.toLowerCase());
+    recipe.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || recipe.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
   const favoriteRecipes = recipes.filter(recipe => recipe.isFavorite);
-
-const [newRecipe, setNewRecipe] = useState({
+  
+  const [newRecipe, setNewRecipe] = useState({
   title: "",
   description: "",
   image: "",
@@ -119,7 +128,7 @@ const updateIngredient = (index, value) => {
     }));
   };
 
-  const submitNewRecipe = async () => {
+const submitNewRecipe = async () => {
   if (newRecipe.title && newRecipe.description) {
     const recipe = {
       ...newRecipe,
@@ -144,11 +153,9 @@ const updateIngredient = (index, value) => {
           isFavorite: false,
         });
       }
-
       await fetchRecipes();
-
+      await fetchMyRecipes();
       setEditingRecipe(null);
-
       setNewRecipe({
         title: "",
         description: "",
@@ -160,7 +167,6 @@ const updateIngredient = (index, value) => {
         ingredients: [""],
         instructions: [""],
       });
-
       setShowAddRecipe(false);
       setCurrentPage("recipes");
     } catch (err) {
@@ -169,7 +175,11 @@ const updateIngredient = (index, value) => {
   }
 };
 
+// 
+
 const handleDeleteRecipe = async (id) => {
+  console.log("Deleting ID:", id);
+
   const confirmDelete = window.confirm(
     "Are you sure you want to delete this recipe?"
   );
@@ -179,14 +189,16 @@ const handleDeleteRecipe = async (id) => {
   try {
     await deleteRecipe(id);
     await fetchRecipes();
+    await fetchMyRecipes();
 
-    // If the deleted recipe was open, go back to recipes page
     if (selectedRecipe?._id === id) {
       setSelectedRecipe(null);
       setCurrentPage("recipes");
     }
   } catch (error) {
-    console.error("Error deleting recipe:", error);
+    console.log("Status:", error.response?.status);
+    console.log("Response:", error.response?.data);
+    console.log(error);
   }
 };
 
@@ -206,83 +218,68 @@ const toggleFavorite = (recipeId) => {
   );
 };
 
-  const renderStars = (rating) => {
-    return [...Array(5)].map((_, i) => (
-      <Star
-        key={i}
-        className={`w-4 h-4 ${i < Math.floor(rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
-      />
-    ));
-  };
-
-
-  if (!isLoggedIn) {
+if (!isLoggedIn) {
   return authPage === "login" ? (
-    <LoginPage
-      setIsLoggedIn={setIsLoggedIn}
-      setAuthPage={setAuthPage}
-    />
-  ) : (
-    <RegisterPage
-      setAuthPage={setAuthPage}
-    />
-  );
-}
+    <LoginPage setIsLoggedIn={setIsLoggedIn} setAuthPage={setAuthPage} /> ) : (
+    <RegisterPage setAuthPage={setAuthPage} /> );}
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navigation
-  currentPage={currentPage}
-  setCurrentPage={setCurrentPage}
-  setShowAddRecipe={setShowAddRecipe}
-  setIsLoggedIn={setIsLoggedIn}
-  setEditingRecipe={setEditingRecipe}
-  setNewRecipe={setNewRecipe}
-   setRecipes={setRecipes}
-  setSelectedRecipe={setSelectedRecipe}
-/>
+      <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} setShowAddRecipe={setShowAddRecipe}
+       setIsLoggedIn={setIsLoggedIn} setEditingRecipe={setEditingRecipe} setNewRecipe={setNewRecipe} setRecipes={setRecipes}
+        setSelectedRecipe={setSelectedRecipe}/>
 
-      {currentPage === "home" && (<HomePage setCurrentPage={setCurrentPage} />)}
-      {currentPage === "recipes" && <RecipesPage
-  recipes={filteredRecipes}
-  searchTerm={searchTerm}
-  setSearchTerm={setSearchTerm}
-  selectedCategory={selectedCategory}
-  setSelectedCategory={setSelectedCategory}
-  categories={categories}
-  setSelectedRecipe={setSelectedRecipe}
-  setCurrentPage={setCurrentPage}
-  toggleFavorite={toggleFavorite}
-  renderStars={renderStars}
-  setNewRecipe={setNewRecipe}
-  setShowAddRecipe={setShowAddRecipe}
-  setEditingRecipe={setEditingRecipe}
-   handleDeleteRecipe={handleDeleteRecipe}
-/>}
-      {currentPage === "favorites" && <FavoritesPage
-  favoriteRecipes={favoriteRecipes}
-  setSelectedRecipe={setSelectedRecipe}
-  setCurrentPage={setCurrentPage}
-  toggleFavorite={toggleFavorite}
-  renderStars={renderStars}
-/>}
+        {currentPage === "home" && (<HomePage setCurrentPage={setCurrentPage} />)}
+
+        {currentPage === "recipes" && <RecipesPage
+        recipes={filteredRecipes}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        categories={categories}
+        setSelectedRecipe={setSelectedRecipe}
+        setCurrentPage={setCurrentPage}
+        toggleFavorite={toggleFavorite} 
+        setNewRecipe={setNewRecipe}
+        setShowAddRecipe={setShowAddRecipe}
+        setEditingRecipe={setEditingRecipe}
+        handleDeleteRecipe={handleDeleteRecipe}/>}
+        
+        {currentPage === "my-recipes" && (<MyRecipesPage
+        recipes={myRecipes}
+        currentUser={JSON.parse(localStorage.getItem("user"))}
+        toggleFavorite={toggleFavorite}
+        setSelectedRecipe={setSelectedRecipe}
+        setCurrentPage={setCurrentPage}
+        setEditingRecipe={setEditingRecipe}
+        setNewRecipe={setNewRecipe}
+        setShowAddRecipe={setShowAddRecipe}
+        handleDeleteRecipe={handleDeleteRecipe}/>)}
+
+        {currentPage === "favorites" && <FavoritesPage
+        favoriteRecipes={favoriteRecipes}
+        setSelectedRecipe={setSelectedRecipe}
+        setCurrentPage={setCurrentPage}
+        toggleFavorite={toggleFavorite}/>}
+
       {currentPage === "about" && <AboutPage />}
-      {currentPage === "recipe-detail" && (<RecipeDetailPage selectedRecipe={selectedRecipe} 
-      setCurrentPage={setCurrentPage} toggleFavorite={toggleFavorite} renderStars={renderStars} />)}
 
-      {showAddRecipe && (
-  <AddRecipeModal
-    editingRecipe={editingRecipe}
-    setShowAddRecipe={setShowAddRecipe}
-    newRecipe={newRecipe}
-    setNewRecipe={setNewRecipe}
-    categories={categories}
-    addIngredient={addIngredient}
-    removeIngredient={removeIngredient}
-    updateIngredient={updateIngredient}
-    addInstruction={addInstruction}
-    removeInstruction={removeInstruction}
-    updateInstruction={updateInstruction}
-    submitNewRecipe={submitNewRecipe}/>)}
+      {currentPage === "recipe-detail" && (<RecipeDetailPage selectedRecipe={selectedRecipe} 
+      setCurrentPage={setCurrentPage} toggleFavorite={toggleFavorite} />)}
+
+      {showAddRecipe && (<AddRecipeModal
+      editingRecipe={editingRecipe}
+      setShowAddRecipe={setShowAddRecipe}
+      newRecipe={newRecipe}
+      setNewRecipe={setNewRecipe}
+      categories={categories}
+      addIngredient={addIngredient}
+      removeIngredient={removeIngredient}
+      updateIngredient={updateIngredient}
+      addInstruction={addInstruction}
+      removeInstruction={removeInstruction}
+      updateInstruction={updateInstruction}
+      submitNewRecipe={submitNewRecipe}/>)}
     </div>
   );
 }

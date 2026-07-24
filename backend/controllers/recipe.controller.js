@@ -61,18 +61,22 @@ const updateRecipe = async (req, res) => {
   }
 };
 
-
 const deleteRecipe = async (req, res) => {
+  console.log("🔥 Delete controller reached");
+  console.log("ID:", req.params.id);
+  console.log("User:", req.user);
+
   try {
     const recipe = await Recipe.findById(req.params.id);
-    
+
+    console.log("Recipe Found:", recipe);
+
     if (!recipe) {
       return res.status(404).json({
         message: "Recipe not found",
       });
     }
 
-    // Check ownership
     if (recipe.user.toString() !== req.user.id) {
       return res.status(403).json({
         message: "You can only delete your own recipes.",
@@ -80,10 +84,26 @@ const deleteRecipe = async (req, res) => {
     }
 
     await Recipe.findByIdAndDelete(req.params.id);
+    console.log("✅ Deleted successfully");
 
     res.json({
       message: "Recipe deleted successfully",
     });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const getMyRecipes = async (req, res) => {
+  try {
+    const recipes = await Recipe.find({
+      user: req.user.id,
+    });
+
+    res.status(200).json(recipes);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -93,6 +113,7 @@ const deleteRecipe = async (req, res) => {
 
 module.exports = {
   getRecipes,
+  getMyRecipes,
   createRecipe,
   deleteRecipe,
   updateRecipe,

@@ -7,9 +7,7 @@ export default function AboutPage() {
       <div 
       className="absolute h-80 inset-0 bg-cover  bg-center bg-no-repeat"
       style={{
-        backgroundImage:`url('${food}')`,
-      }}
-   >
+        backgroundImage:`url('${food}')`,  }} >
       {/* Hero Section */}
           <div className="text-center max-w-7xl mx-auto px-4 py-24">
             <h1 className="text-5xl md:text-6xl  text-white font-bold font-['Mali'] mb-6">

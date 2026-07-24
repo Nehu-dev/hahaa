@@ -1,5 +1,6 @@
 import React from "react";
 import { Heart, Clock, Users, ChefHat } from "lucide-react";
+import RatingStars from "../component/RatingStars";
 
 export default function RecipeDetailPage({
   selectedRecipe,
@@ -15,54 +16,37 @@ export default function RecipeDetailPage({
         <div className="max-w-7xl mx-auto px-4 py-8">
           <button
             onClick={() => setCurrentPage('recipes')}
-            className="mb-6 text-rose-600 hover:text-rose-700 flex items-center space-x-2"
-          >
+            className="mb-6 text-rose-600 hover:text-rose-700 flex items-center space-x-2"  >
             <span>← Back to Recipes</span>
           </button>
 
          <div className="bg-white rounded-2xl shadow-lg overflow-hidden grid lg:grid-cols-[40%_60%]">
+          {/* Left Side - Image */}
+          <div className="h-[650px] bg-gray-100 flex items-center justify-center overflow-hidden">
+            <img src={selectedRecipe.image}  alt={selectedRecipe.title} className="w-full h-full object-contain" />
+          </div>
 
-  {/* Left Side - Image */}
-  <div className="h-[650px] bg-gray-100 flex items-center justify-center overflow-hidden">
-    <img
-      src={selectedRecipe.image}
-      alt={selectedRecipe.title}
-      className="w-full h-full object-contain"
-    />
-  </div>
-
-  {/* Right Side - Content */}
-  <div className="p-8 overflow-y-auto h-[650px]">
-
-    <div className="flex justify-between items-start mb-6">
-      <div>
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          {selectedRecipe.title}
-        </h1>
-
-        <p className="text-lg text-gray-600 mb-4">
-          {selectedRecipe.description}
-        </p>
-
-        <div className="flex items-center gap-2 mb-6">
-          {renderStars(selectedRecipe.rating)}
-          <span className="text-gray-600">
-            ({selectedRecipe.reviews} reviews)
-          </span>
+          {/* Right Side - Content */}
+          <div className="p-8 overflow-y-auto h-[650px]">
+            <div className="flex justify-between items-start mb-6">
+              <div><h1 className="text-4xl font-bold text-gray-800 mb-4">{selectedRecipe.title}</h1>
+              <p className="text-lg text-gray-600 mb-4">{selectedRecipe.description}</p>
+              <div className="flex items-center gap-2 mb-6">
+              <RatingStars rating={selectedRecipe.rating} />
+              <span className="text-gray-600">
+              ({selectedRecipe.reviews} reviews)
+              </span>
         </div>
       </div>
 
       <button
         onClick={() => toggleFavorite(selectedRecipe._id)}
-        className="p-3 bg-gray-100 rounded-full hover:bg-gray-200"
-      >
+        className="p-3 bg-gray-100 rounded-full hover:bg-gray-200"  >
         <Heart
           className={`w-6 h-6 ${
             selectedRecipe.isFavorite
               ? "fill-rose-500 text-rose-500"
-              : "text-gray-400"
-          }`}
-        />
+              : "text-gray-400" }`} />
       </button>
     </div>
 
@@ -131,5 +115,5 @@ export default function RecipeDetailPage({
     </div>
   </div>
 </div>
-    );
-  }
+);
+}

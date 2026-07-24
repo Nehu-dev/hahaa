@@ -4,12 +4,10 @@ import food2 from  '../assest/image1.jpg';
 function HomePage({ setCurrentPage }) {
   return (
     <div className="min-h-screen">
-       <div 
-      className="absolute inset-0 bg-cover  bg-center bg-no-repeat"
+       <div  className="absolute inset-0 bg-cover  bg-center bg-no-repeat"
       style={{
         backgroundImage:`url('${food2}')`,
-      }}
-   >
+      }} >
       {/* Hero Section */}
       <div className=" text-white">
         <div className="max-w-7xl mx-auto px-4 py-20">
@@ -22,8 +20,7 @@ function HomePage({ setCurrentPage }) {
             </p>
             <button
               onClick={() => setCurrentPage('recipes')}
-              className="bg-white text-rose-600 px-8 py-4 mt-14 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
-            >
+              className="bg-white text-rose-600 px-8 py-4 mt-14 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors" >
               Explore Recipes
             </button>
           </div>

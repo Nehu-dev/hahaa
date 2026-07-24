@@ -1,5 +1,6 @@
 import React from 'react'
 import { Heart } from "lucide-react";
+import RatingStars from "../component/RatingStars";
 
 export default function FavoritesPage({
   favoriteRecipes,
@@ -19,45 +20,35 @@ export default function FavoritesPage({
             <p className="text-gray-500 mb-8">Start adding recipes to your favorites to see them here</p>
             <button
               onClick={() => setCurrentPage('recipes')}
-              className="bg-rose-600 text-white px-6 py-3 rounded-lg hover:bg-rose-700 transition-colors"
-            >
+              className="bg-rose-600 text-white px-6 py-3 rounded-lg hover:bg-rose-700 transition-colors" >
               Explore Recipes
             </button>
-          </div>
-        ) : (
+          </div> ) : (
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {favoriteRecipes.map(recipe => (
               <div key={recipe.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative">
-                  <img
-                    src={recipe.image}
-                    alt={recipe.title}
-                    className="w-full h-48 object-cover"
-                  />
+                  <img src={recipe.image} alt={recipe.title}
+                    className="w-full h-48 object-cover" />
                   <button
                     onClick={() => toggleFavorite(recipe.id)}
-                    className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg"
-                  >
+                    className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg" >
                     <Heart className="w-5 h-5 fill-rose-500 text-rose-500" />
                   </button>
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2">{recipe.title}</h3>
                   <p className="text-gray-600 mb-4 line-clamp-2">{recipe.description}</p>
-                  <button
-                    onClick={() => {
+                  <button onClick={() => {
                       setSelectedRecipe(recipe);
-                      setCurrentPage('recipe-detail');
-                    }}
-                    className="w-full bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700 transition-colors"
-                  >
+                      setCurrentPage('recipe-detail'); }}
+                    className="w-full bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700 transition-colors" >
                     View Recipe
                   </button>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              </div> ))}
+          </div> )}
       </div>
     </div>
   )

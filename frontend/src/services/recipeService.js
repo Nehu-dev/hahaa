@@ -46,3 +46,13 @@ export const deleteRecipe = async (id) => {
 );
   return response.data;
 };
+
+//Get My recipe
+export const getMyRecipes = async () => {
+  const response = await axios.get(
+    `${API_URL}/my-recipes`,
+    getAuthConfig()
+  );
+
+  return response.data;
+};

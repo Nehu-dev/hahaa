@@ -1,5 +1,5 @@
 import React from "react";
-import { HomeIcon, BookOpen, Heart, Info, PlusCircle, User } from "lucide-react";
+import { HomeIcon, BookOpen, Heart, Info, PlusCircle, User, ChefHat } from "lucide-react";
 import recipe from "../assest/logo.png";
 
 export default function Navigation({
@@ -22,77 +22,66 @@ export default function Navigation({
           </div>
           
           <div className="flex items-center space-x-6">
-            <button
-              onClick={() => setCurrentPage('home')}
+            <button onClick={() => setCurrentPage('home')}
               className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
-                currentPage === 'home' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600'
-              }`}
-            >
+                currentPage === 'home' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600' }`} >
               <HomeIcon className="w-4 h-4" /> {/* <-- changed here */}
               <span>Home</span>
             </button>
-            <button
-              onClick={() => setCurrentPage('recipes')}
+            <button onClick={() => setCurrentPage('recipes')}
               className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
-                currentPage === 'recipes' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600'
-              }`}
-            >
+                currentPage === 'recipes' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600' }`} >
               <BookOpen className="w-4 h-4" />
               <span>Recipes</span>
             </button>
             <button
               onClick={() => setCurrentPage('favorites')}
               className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
-                currentPage === 'favorites' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600'
-              }`}
-            >
+                currentPage === 'favorites' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600' }`} >
               <Heart className="w-4 h-4" />
               <span>Favorites</span>
             </button>
-            <button
-              onClick={() => setCurrentPage('about')}
+            <button onClick={() => setCurrentPage('about')}
               className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
-                currentPage === 'about' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600'
-              }`}
-            >
+                currentPage === 'about' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600' }`} >
               <Info className="w-4 h-4" />
               <span>About Us</span>
             </button>
             <button
               onClick={() => {
-  setEditingRecipe(null);
-
-  setNewRecipe({
-    title: "",
-    description: "",
-    image: "",
-    cookTime: "",
-    servings: "",
-    difficulty: "Easy",
-    category: "Main Course",
-    ingredients: [""],
-    instructions: [""],
-  });
-
-  setShowAddRecipe(true);
-}}
-              className="flex items-center space-x-1 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors"
-            >
+                setEditingRecipe(null);
+                setNewRecipe({
+                  title: "",
+                  description: "",
+                  image: "",
+                  cookTime: "",
+                  servings: "",
+                  difficulty: "Easy",
+                  category: "Main Course",
+                  ingredients: [""],
+                  instructions: [""],});
+                  setShowAddRecipe(true);}}
+              className="flex items-center space-x-1 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors" >
               <PlusCircle className="w-4 h-4" />
               <span>Add Recipe</span>
             </button>
-            <button
-             onClick={() => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
 
-  setRecipes([]);
-  setSelectedRecipe(null);
-  setCurrentPage("home");
-  setIsLoggedIn(false);
-}}
-              className="flex items-center space-x-1 text-gray-600 hover:text-rose-600 px-3 py-2 rounded-lg transition-colors"
-            >
+            <button onClick={() => setCurrentPage("my-recipes")}
+            className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
+              currentPage === "my-recipes" ? "bg-rose-100 text-rose-600"
+              : "text-gray-600 hover:text-rose-600"}`}>
+                <ChefHat className="w-4 h-4" />
+                <span>My Recipes</span>
+            </button>
+            
+            <button onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
+              setRecipes([]);
+              setSelectedRecipe(null);
+              setCurrentPage("home");
+              setIsLoggedIn(false);}}
+              className="flex items-center space-x-1 text-gray-600 hover:text-rose-600 px-3 py-2 rounded-lg transition-colors" >
               <User className="w-4 h-4" />
               <span>Logout</span>
             </button>
@@ -102,4 +91,3 @@ export default function Navigation({
     </nav>
   )
 }
-
