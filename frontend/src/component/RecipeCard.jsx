@@ -58,7 +58,7 @@ export default function RecipeCard({
           <div className="flex items-center">
             <RatingStars rating={recipe.rating} />
             <span className="ml-2 text-sm text-gray-500">
-              ({recipe.reviews})
+              ({recipe.reviews.length})
             </span>
           </div>
 

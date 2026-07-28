@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth.route");
 const connectDB = require("./config/db");
 const recipeRoutes = require("./routes/recipe.route");
-
+const uploadRoutes = require("./routes/upload.route");
 
 dotenv.config();
 
@@ -19,6 +19,7 @@ connectDB();
 
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

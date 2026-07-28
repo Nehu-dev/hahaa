@@ -111,10 +111,66 @@ const getMyRecipes = async (req, res) => {
   }
 };
 
+const addReview = async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+
+    const recipe = await Recipe.findById(req.params.id);
+
+    if (!recipe) {
+      return res.status(404).json({
+        message: "Recipe not found",
+      });
+    }
+
+    // Prevent users from reviewing their own recipe
+    if (recipe.user.toString() === req.user.id.toString()) {
+      return res.status(400).json({
+        message: "You cannot review your own recipe.",
+      });
+    }
+
+    // Check if user already reviewed
+    console.log("Recipe reviews:", recipe.reviews);
+    const alreadyReviewed = recipe.reviews.find(
+      (review) => review.user && review.user.toString() === req.user.id
+    );
+
+    if (alreadyReviewed) {
+      return res.status(400).json({
+        message: "You have already reviewed this recipe.",
+      });
+    }
+
+    console.log("req.user =", req.user);
+    const review = {
+    user: req.user.id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  };
+
+    recipe.reviews.push(review);
+
+    recipe.rating =
+      recipe.reviews.reduce((acc, item) => acc + item.rating, 0) /
+      recipe.reviews.length;
+
+    await recipe.save();
+
+    res.status(201).json(recipe);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getRecipes,
   getMyRecipes,
   createRecipe,
   deleteRecipe,
   updateRecipe,
+  addReview,
 };

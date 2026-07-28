@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { X, Plus } from "lucide-react";
+import { uploadImage } from "../services/uploadService";
 
 export default function AddRecipeModal({
   editingRecipe,
@@ -15,6 +16,7 @@ export default function AddRecipeModal({
   updateInstruction,
   submitNewRecipe,
 }) {
+   const [uploading, setUploading] = useState(false);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-gray-300 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -38,12 +40,27 @@ export default function AddRecipeModal({
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Image URL</label>
-              <input type="url" value={newRecipe.image}
-                onChange={(e) => setNewRecipe(prev => ({ ...prev, image: e.target.value }))}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
-                placeholder="Enter image URL" />
-            </div>
+              <label className="block text-sm font-medium mb-2">Recipe Image</label>
+              <input type="file" accept="image/*"
+              onChange={async (e) => { const file = e.target.files[0];
+                if (!file) return;
+                try {
+                  setUploading(true);
+                  const imageUrl = await uploadImage(file);
+                  setNewRecipe((prev) => ({
+                    ...prev,
+                    image: imageUrl,}));
+                  } catch (err) {
+                    alert("Image upload failed");
+                    console.error(err);
+                    } finally {
+                    setUploading(false);
+                  }
+                }}className="w-full p-3 border border-gray-300 rounded-lg"/>
+                {uploading && (<p className="text-blue-600 mt-2">Uploading image...</p>)}
+                {newRecipe.image && (
+                  <img src={newRecipe.image} alt="Preview" className="mt-3 w-40 h-40 object-cover rounded-lg"/>)}
+              </div>
           </div>
 
           <div>

@@ -47,10 +47,33 @@ const recipeSchema = new mongoose.Schema(
       default: 0,
     },
 
-    reviews: {
-      type: Number,
-      default: 0,
+    reviews: [
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
+
+    name: {
+      type: String,
+    },
+
+    rating: {
+      type: Number,
+      required: true,
+    },
+
+    comment: {
+      type: String,
+      required: true,
+    },
+
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+],
 
     isFavorite: {
       type: Boolean,

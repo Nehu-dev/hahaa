@@ -56,3 +56,14 @@ export const getMyRecipes = async () => {
 
   return response.data;
 };
+
+//Review
+export const addReview = async (recipeId, reviewData) => {
+  const response = await axios.post(
+    `${API_URL}/${recipeId}/reviews`,
+    reviewData,
+    getAuthConfig()
+  );
+
+  return response.data;
+};

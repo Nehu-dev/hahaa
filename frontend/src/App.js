@@ -38,6 +38,7 @@ function App() {
           recipe.user
         );
       });
+      console.log("Recipes API Response:", data);
       setRecipes(data);
     } catch (error) {
       console.error("Error fetching recipes:", error);
@@ -149,9 +150,9 @@ const submitNewRecipe = async () => {
         await addRecipe({
           ...recipe,
           rating: 0,
-          reviews: 0,
+          reviews: [],
           isFavorite: false,
-        });
+      });
       }
       await fetchRecipes();
       await fetchMyRecipes();
