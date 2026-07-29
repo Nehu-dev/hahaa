@@ -7,7 +7,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AboutPage from "./pages/AboutPage";
 import RecipeDetailPage from "./pages/RecipeDetailPage";
 import AddRecipeModal from "./component/AddRecipeModal";
-import { getRecipes, getMyRecipes, addRecipe, updateRecipe, deleteRecipe,} from "./services/recipeService";
+import { getRecipes, getMyRecipes, addRecipe, updateRecipe, deleteRecipe, toggleFavoriteRecipe,} from "./services/recipeService";
 import RegisterPage from "./pages/RegisterPage";
 import MyRecipesPage from "./pages/MyRecipesPage";
 
@@ -24,6 +24,12 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+
+const favoriteRecipes = recipes.filter((recipe) =>
+  recipe.favorites?.includes(currentUser?.id)
+);
 
   const categories = ["All", "Main Course", "Dessert", "Salad"];
 
@@ -73,7 +79,6 @@ function App() {
     const matchesCategory = selectedCategory === 'All' || recipe.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
-  const favoriteRecipes = recipes.filter(recipe => recipe.isFavorite);
   
   const [newRecipe, setNewRecipe] = useState({
   title: "",
@@ -151,7 +156,7 @@ const submitNewRecipe = async () => {
           ...recipe,
           rating: 0,
           reviews: [],
-          isFavorite: false,
+          favorites: [],
       });
       }
       await fetchRecipes();
@@ -175,8 +180,6 @@ const submitNewRecipe = async () => {
     }
   }
 };
-
-// 
 
 const handleDeleteRecipe = async (id) => {
   console.log("Deleting ID:", id);
@@ -203,20 +206,24 @@ const handleDeleteRecipe = async (id) => {
   }
 };
 
-const toggleFavorite = (recipeId) => {
-  setRecipes((prev) =>
-    prev.map((recipe) =>
-      recipe._id === recipeId
-        ? { ...recipe, isFavorite: !recipe.isFavorite }
-        : recipe
-    )
-  );
+const toggleFavorite = async (recipeId) => {
+  try {
+    await toggleFavoriteRecipe(recipeId);
 
-  setSelectedRecipe((prev) =>
-    prev && prev._id === recipeId
-      ? { ...prev, isFavorite: !prev.isFavorite }
-      : prev
-  );
+    await fetchRecipes();
+    await fetchMyRecipes();
+
+    if (selectedRecipe?._id === recipeId) {
+      const updated = await getRecipes();
+      const recipe = updated.find((r) => r._id === recipeId);
+
+      if (recipe) {
+        setSelectedRecipe(recipe);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 if (!isLoggedIn) {

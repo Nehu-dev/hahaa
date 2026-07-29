@@ -10,6 +10,7 @@ const {
   updateRecipe,
   deleteRecipe,
   addReview,
+  toggleFavorite,
 } = require("../controllers/recipe.controller");
 
 router.get("/", getRecipes);
@@ -19,5 +20,6 @@ router.get("/my-recipes", protect, getMyRecipes);
 router.put("/:id", protect, updateRecipe);
 router.delete("/:id", protect, deleteRecipe);
 router.post("/:id/reviews", protect, addReview);
+router.put("/:id/favorite", protect, toggleFavorite);
 
 module.exports = router;

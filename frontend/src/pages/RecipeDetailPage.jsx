@@ -67,7 +67,7 @@ export default function RecipeDetailPage({
                   </div>
                 </div>
                 <button onClick={() => toggleFavorite(selectedRecipe._id)}className="p-3 bg-gray-100 rounded-full hover:bg-gray-200"  >
-                  <Heart className={`w-6 h-6 ${ selectedRecipe.isFavorite ? "fill-rose-500 text-rose-500" : "text-gray-400" }`} />
+                  <Heart className={`w-6 h-6 ${ selectedRecipe.favorites?.includes(currentUser?.id) ? "fill-rose-500 text-rose-500" : "text-gray-400" }`} />
                 </button>
               </div>
               {/* Info Cards */}

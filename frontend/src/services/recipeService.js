@@ -67,3 +67,14 @@ export const addReview = async (recipeId, reviewData) => {
 
   return response.data;
 };
+
+//Favourite
+export const toggleFavoriteRecipe = async (id) => {
+  const response = await axios.put(
+    `${API_URL}/${id}/favorite`,
+    {},
+    getAuthConfig()
+  );
+
+  return response.data;
+};

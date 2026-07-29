@@ -18,29 +18,13 @@ export default function RecipeCard({
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
       {/* Image */}
       <div className="relative">
-        <img
-          src={
-            recipe.image && recipe.image.trim() !== ""
-              ? recipe.image
-              : "https://placehold.co/600x400?text=No+Image"
-          }
-          alt={recipe.title}
-          className="w-full h-48 object-cover"
-        />
-
-        <button
-          onClick={() => toggleFavorite(recipe._id)}
-          className="absolute top-4 right-4 bg-white p-2 rounded-full shadow"
-        >
-          <Heart
-            className={`w-5 h-5 ${
-              recipe.isFavorite
-                ? "fill-rose-500 text-rose-500"
-                : "text-gray-400"
-            }`}
-          />
+        <img src={recipe.image && recipe.image.trim() !== "" ? recipe.image : "https://placehold.co/600x400?text=No+Image"}
+          alt={recipe.title} className="w-full h-48 object-cover"/>
+        <button onClick={() => toggleFavorite(recipe._id)}
+          className="absolute top-4 right-4 bg-white p-2 rounded-full shadow" >
+          <Heart className={`w-5 h-5 ${ recipe.favorites?.includes(currentUser?.id) ? "fill-rose-500 text-rose-500"
+          : "text-gray-400"}`}/>
         </button>
-
         <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium">
           {recipe.category}
         </div>
@@ -49,11 +33,7 @@ export default function RecipeCard({
       {/* Content */}
       <div className="p-6">
         <h3 className="text-xl font-bold mb-2">{recipe.title}</h3>
-
-        <p className="text-gray-600 mb-4 line-clamp-2">
-          {recipe.description}
-        </p>
-
+        <p className="text-gray-600 mb-4 line-clamp-2">{recipe.description}</p>
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
             <RatingStars rating={recipe.rating} />

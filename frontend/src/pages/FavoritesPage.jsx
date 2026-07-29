@@ -27,12 +27,12 @@ export default function FavoritesPage({
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {favoriteRecipes.map(recipe => (
-              <div key={recipe.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div key={recipe._id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative">
-                  <img src={recipe.image} alt={recipe.title}
-                    className="w-full h-48 object-cover" />
+                  <img src={ recipe.image && recipe.image.trim() !== "" ? recipe.image : "https://placehold.co/600x400?text=No+Image"}
+                  alt={recipe.title} className="w-full h-48 object-cover" />
                   <button
-                    onClick={() => toggleFavorite(recipe.id)}
+                    onClick={() => toggleFavorite(recipe._id)}
                     className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg" >
                     <Heart className="w-5 h-5 fill-rose-500 text-rose-500" />
                   </button>
