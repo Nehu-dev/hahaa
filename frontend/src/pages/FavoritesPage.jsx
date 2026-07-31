@@ -1,6 +1,5 @@
 import React from 'react'
 import { Heart } from "lucide-react";
-import RatingStars from "../component/RatingStars";
 
 export default function FavoritesPage({
   favoriteRecipes,
