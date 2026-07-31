@@ -10,7 +10,7 @@ export default function RatingStars({ rating }) {
           className={`w-4 h-4 ${
             index < Math.floor(rating)
               ? "fill-yellow-400 text-yellow-400"
-              : "text-gray-300"
+              : "text-gray-500"
           }`}
         />
       ))}
