@@ -10,9 +10,9 @@ export default function FavoritesPage({
   renderStars,
 }) {
   return (
-    <div className="min-h-screen bg-yellow-100">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">Your Favorite Recipes</h1>
+        <h1 className="text-3xl font-bold text-yellow-500 mb-8">Your Favorite Recipes</h1>
         {favoriteRecipes.length === 0 ? (
           <div className="text-center py-16">
             <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -27,7 +27,7 @@ export default function FavoritesPage({
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {favoriteRecipes.map(recipe => (
-              <div key={recipe._id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div key={recipe._id} className="bg-yellow-100 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative">
                   <img src={ recipe.image && recipe.image.trim() !== "" ? recipe.image : "https://placehold.co/600x400?text=No+Image"}
                   alt={recipe.title} className="w-full h-48 object-cover" />

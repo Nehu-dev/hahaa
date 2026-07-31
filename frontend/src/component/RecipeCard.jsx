@@ -15,7 +15,7 @@ export default function RecipeCard({
   handleDeleteRecipe,
 }) {
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
+    <div className="bg-rose-200 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
       {/* Image */}
       <div className="relative">
         <img src={recipe.image && recipe.image.trim() !== "" ? recipe.image : "https://placehold.co/600x400?text=No+Image"}
@@ -37,7 +37,7 @@ export default function RecipeCard({
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
             <RatingStars rating={recipe.rating} />
-            <span className="ml-2 text-sm text-gray-500">
+            <span className="ml-2 text-sm text-black-500">
               ({recipe.reviews.length})
             </span>
           </div>

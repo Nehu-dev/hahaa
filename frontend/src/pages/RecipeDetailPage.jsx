@@ -44,14 +44,14 @@ export default function RecipeDetailPage({
     console.log("Reviews:", selectedRecipe.reviews);
 
     return (
-      <div className="min-h-screen bg-green-100">
+      <div className="min-h-screen bg-white">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <button
             onClick={() => setCurrentPage('recipes')}
             className="mb-6 text-rose-600 hover:text-rose-700 flex items-center space-x-2"  >
             <span>← Back to Recipes</span>
           </button>
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden grid lg:grid-cols-[40%_60%]">
+          <div className="bg-green-100 rounded-2xl shadow-lg overflow-hidden grid lg:grid-cols-[40%_60%]">
             {/* Left Side - Image */}
             <div className="h-[650px] bg-gray-100 flex items-center justify-center overflow-hidden">
               <img src={selectedRecipe.image}  alt={selectedRecipe.title} className="w-full h-full object-contain" />

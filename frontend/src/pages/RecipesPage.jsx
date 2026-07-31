@@ -24,10 +24,10 @@ export default function RecipesPage({
 
   console.log("Current User:", currentUser);
   return (
-    <div className="min-h-screen bg-red-400">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Search & Filter */}
-        <div className="bg-white rounded-2xl shadow-lg p-4 mb-8">
+        <div className="bg-rose-400 rounded-2xl shadow-lg p-4 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
             

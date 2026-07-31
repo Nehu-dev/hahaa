@@ -13,15 +13,17 @@ export default function Navigation({
   setSelectedRecipe,
 }) {
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
+    <nav className="sticky top-0 z-50 px-4 pt-4">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-2">
-            <img  src={recipe} alt="" className=" pt-2 w-20 h-20" />
-            <h1 className="text-2xl font-bold text-red-600 font-['Mali']">BiteBloom</h1>
-          </div>
+        <div className="bg-white rounded-2xl shadow-lg px-6 h-16 flex items-center ">
           
-          <div className="flex items-center space-x-6">
+          {/* Logo */}
+          <button onClick={() => setCurrentPage("home")} className="flex items-center gap-2 mr-8">
+            <img src={recipe} alt="BiteBloom" className="w-12 h-12 ml-4 mr-24 object-contain" />
+          </button>
+
+          {/* Navigation */}
+          <div className="flex items-center gap-10">
             <button onClick={() => setCurrentPage('home')}
               className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
                 currentPage === 'home' ? 'bg-rose-100 text-rose-600' : 'text-gray-600 hover:text-rose-600' }`} >

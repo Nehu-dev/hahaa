@@ -13,11 +13,18 @@ export default function MyRecipesPage({
   handleDeleteRecipe,
 }) {
   return (
-    <div className="min-h-screen bg-red-400">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-white mb-8">
-          My Recipes
-        </h1>
+       <div className="mb-10">
+          <span className="text-rose-600 font-semibold uppercase tracking-wider">
+            Dashboard
+          </span>
+
+          <h1 className="text-4xl font-bold text-gray-800 mt-1">
+            My Recipes
+          </h1>
+        </div>
+
 
         {recipes.length === 0 ? (
           <div className="bg-white rounded-xl p-10 text-center">

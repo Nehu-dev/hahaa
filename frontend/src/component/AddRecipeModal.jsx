@@ -19,7 +19,7 @@ export default function AddRecipeModal({
    const [uploading, setUploading] = useState(false);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-300 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-rose-600 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
       
         <div className="p-6 border-b flex justify-between items-center">
           <h2 className="text-2xl font-bold"> {editingRecipe ? "Edit Recipe" : "Add New Recipe"}</h2>
@@ -122,13 +122,13 @@ export default function AddRecipeModal({
                   {newRecipe.ingredients.length > 1 && (
                     <button
                       onClick={() => removeIngredient(index)}
-                      className="p-3 text-red-500 hover:bg-red-50 rounded-lg" >
+                      className="p-3 text-red-700 hover:bg-red-50 rounded-lg" >
                       <X className="w-5 h-5" />
                     </button> )}
                 </div> ))}
               <button
                 onClick={addIngredient}
-                className="flex items-center space-x-2 text-rose-600 hover:text-rose-700 font-medium" >
+                className="flex items-center space-x-2 text-white hover:text-rose-700 font-medium" >
                 <Plus className="w-4 h-4" />
                 <span>Add Ingredient</span>
               </button>
@@ -154,7 +154,7 @@ export default function AddRecipeModal({
                 </div> ))}
               <button
                 onClick={addInstruction}
-                className="flex items-center space-x-2 text-rose-600 hover:text-rose-700 font-medium" >
+                className="flex items-center space-x-2 text-white hover:text-rose-700 font-medium" >
                 <Plus className="w-4 h-4" />
                 <span>Add Instruction</span>
               </button>
