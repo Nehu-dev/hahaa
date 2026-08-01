@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/recipes";
+const API_URL = "https://recipe-oxp3.onrender.com/api/recipes";
 
 const getAuthConfig = () => {
   const token = localStorage.getItem("token");

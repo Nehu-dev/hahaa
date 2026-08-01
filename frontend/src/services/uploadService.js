@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/upload";
+const API_URL = "https://recipe-oxp3.onrender.com/api/upload";
 
 export const uploadImage = async (imageFile) => {
   const formData = new FormData();
